@@ -23,7 +23,7 @@ class RecommenderMetrics:
         """
         topN = defaultdict(list)
         for userID, movieID, actualRating, estimatedRating, _ in predictions:
-            if (estimatedRating >= minimumRating):
+            if estimatedRating >= minimumRating:
                 topN[int(userID)].append((int(movieID), estimatedRating))
 
         for userID, ratings in topN.items():
@@ -63,11 +63,11 @@ class RecommenderMetrics:
         # For each left-out rating
         for userID, leftOutMovieID, actualRating, estimatedRating, _ in leftOutPredictions:
             # Only look at ability to recommend things the users actually liked...
-            if (actualRating >= ratingCutoff):
+            if actualRating >= ratingCutoff:
                 # Is it in the predicted top 10 for this user?
                 hit = False
                 for movieID, predictedRating in topNPredicted[int(userID)]:
-                    if (int(leftOutMovieID) == movieID):
+                    if int(leftOutMovieID) == movieID:
                         hit = True
                         break
                 if hit:

@@ -1,9 +1,9 @@
-from MovieLens import MovieLens
+from Evaluating.MovieLens import MovieLens
 from surprise import SVD
 from surprise import KNNBaseline
 from surprise.model_selection import train_test_split
 from surprise.model_selection import LeaveOneOut
-from RecommenderMetrics import RecommenderMetrics
+from Evaluating.RecommenderMetrics import RecommenderMetrics
 
 ml = MovieLens()
 
@@ -13,7 +13,7 @@ data = ml.loadMovieLensLatestSmall()
 print("\nComputing movie popularity ranks so we can measure novelty later...")
 rankings = ml.getPopularityRanks()
 
-print("\nComputing item similarities so we can measure diversity later...")
+print("\nComputing item similarities between movie pairs so we can measure diversity later...")
 fullTrainSet = data.build_full_trainset()
 sim_options = {'name': 'pearson_baseline', 'user_based': False}
 simsAlgo = KNNBaseline(sim_options=sim_options)
@@ -26,7 +26,7 @@ algo = SVD(random_state=10)
 algo.fit(trainSet)
 
 print("\nComputing recommendations...")
-predictions = algo.test(testSet)
+predictions = algo.test(testSet)  # with actual rating and estimated rating for each user movie pair
 
 print("\nEvaluating accuracy of model...")
 print("RMSE: ", RecommenderMetrics.RMSE(predictions))
@@ -45,7 +45,8 @@ for trainSet, testSet in LOOCV.split(data):
 
     # Predicts ratings for left-out ratings only
     print("Predict ratings for left-out set...")
-    leftOutPredictions = algo.test(testSet)
+    leftOutPredictions = algo.test(testSet)  # leftout movies that the user actually watched already
+    print(leftOutPredictions)
 
     # Build predictions for all ratings not in the training set
     print("Predict all missing ratings...")
