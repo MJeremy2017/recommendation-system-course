@@ -140,7 +140,7 @@ class RecommenderMetrics:
         for userID in topNPredicted.keys():
             hit = False
             for movieID, predictedRating in topNPredicted[userID]:
-                if (predictedRating >= ratingThreshold):
+                if predictedRating >= ratingThreshold:
                     hit = True
                     break
             if hit:
