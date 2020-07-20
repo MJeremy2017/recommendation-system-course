@@ -64,7 +64,6 @@ class Evaluator:
             
             print("Computing recommendations...")
             testSet = self.dataset.GetAntiTestSetForUser(testSubject)
-            print("user test set", testSet)
         
             predictions = algo.GetAlgorithm().test(testSet)
             
