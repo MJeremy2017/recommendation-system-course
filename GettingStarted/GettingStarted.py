@@ -18,7 +18,7 @@ def BuildAntiTestSetForUser(testSubject, trainset):
     return anti_testset
 
 
-# Pick an arbitrary test subject
+# Pick an arbitrary Test subject
 testSubject = 85
 
 ml = MovieLens()
