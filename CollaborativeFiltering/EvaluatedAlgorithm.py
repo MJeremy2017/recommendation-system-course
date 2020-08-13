@@ -4,8 +4,9 @@ Created on Thu May  3 10:45:33 2018
 
 @author: Frank
 """
-from RecommenderMetrics import RecommenderMetrics
-from EvaluationData import EvaluationData
+from CollaborativeFiltering.RecommenderMetrics import RecommenderMetrics
+from CollaborativeFiltering.EvaluationData import EvaluationData
+
 
 class EvaluatedAlgorithm:
     
@@ -16,16 +17,16 @@ class EvaluatedAlgorithm:
     def Evaluate(self, evaluationData, doTopN, n=10, verbose=True):
         metrics = {}
         # Compute accuracy
-        if (verbose):
+        if verbose:
             print("Evaluating accuracy...")
         self.algorithm.fit(evaluationData.GetTrainSet())
         predictions = self.algorithm.test(evaluationData.GetTestSet())
         metrics["RMSE"] = RecommenderMetrics.RMSE(predictions)
         metrics["MAE"] = RecommenderMetrics.MAE(predictions)
         
-        if (doTopN):
+        if doTopN:
             # Evaluate top-10 with Leave One Out testing
-            if (verbose):
+            if verbose:
                 print("Evaluating top-N with leave-one-out...")
             self.algorithm.fit(evaluationData.GetLOOCVTrainSet())
             leftOutPredictions = self.algorithm.test(evaluationData.GetLOOCVTestSet())        
@@ -42,13 +43,13 @@ class EvaluatedAlgorithm:
             # Compute ARHR
             metrics["ARHR"] = RecommenderMetrics.AverageReciprocalHitRank(topNPredicted, leftOutPredictions)
         
-            #Evaluate properties of recommendations on full training set
-            if (verbose):
+            # Evaluate properties of recommendations on full training set
+            if verbose:
                 print("Computing recommendations with full data set...")
             self.algorithm.fit(evaluationData.GetFullTrainSet())
             allPredictions = self.algorithm.test(evaluationData.GetFullAntiTestSet())
             topNPredicted = RecommenderMetrics.GetTopN(allPredictions, n)
-            if (verbose):
+            if verbose:
                 print("Analyzing coverage, diversity, and novelty...")
             # Print user coverage with a minimum predicted rating of 4.0:
             metrics["Coverage"] = RecommenderMetrics.UserCoverage(  topNPredicted, 
@@ -61,7 +62,7 @@ class EvaluatedAlgorithm:
             metrics["Novelty"] = RecommenderMetrics.Novelty(topNPredicted, 
                                                             evaluationData.GetPopularityRankings())
         
-        if (verbose):
+        if verbose:
             print("Analysis complete.")
     
         return metrics

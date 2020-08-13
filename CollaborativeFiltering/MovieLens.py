@@ -32,7 +32,7 @@ class MovieLens:
 
         with open(self.moviesPath, newline='', encoding='ISO-8859-1') as csvfile:
                 movieReader = csv.reader(csvfile)
-                next(movieReader)  #Skip header line
+                next(movieReader)  # Skip header line
                 for row in movieReader:
                     movieID = int(row[0])
                     movieName = row[1]
@@ -49,12 +49,12 @@ class MovieLens:
             next(ratingReader)
             for row in ratingReader:
                 userID = int(row[0])
-                if (user == userID):
+                if user == userID:
                     movieID = int(row[1])
                     rating = float(row[2])
                     userRatings.append((movieID, rating))
                     hitUser = True
-                if (hitUser and (user != userID)):
+                if hitUser and (user != userID):
                     break
 
         return userRatings
@@ -80,7 +80,7 @@ class MovieLens:
         maxGenreID = 0
         with open(self.moviesPath, newline='', encoding='ISO-8859-1') as csvfile:
             movieReader = csv.reader(csvfile)
-            next(movieReader)  #Skip header line
+            next(movieReader)  # Skip header line
             for row in movieReader:
                 movieID = int(row[0])
                 genreList = row[2].split('|')
