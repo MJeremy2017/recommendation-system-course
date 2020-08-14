@@ -29,7 +29,7 @@ class Evaluator:
         # Print results
         print("\n")
         
-        if (doTopN):
+        if doTopN:
             print("{:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10}".format(
                     "Algorithm", "RMSE", "MAE", "HR", "cHR", "ARHR", "Coverage", "Diversity", "Novelty"))
             for (name, metrics) in results.items():
